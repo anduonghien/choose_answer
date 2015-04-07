@@ -3,11 +3,11 @@
 <head>
 	<title><%= @title %></title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 	<%= yield :css %>
 	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 	<!-- Latest compiled and minified JavaScript -->
-	<%= javascript_include_tag 'bootstrap.min'%>
+	 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	
 	<%= yield :js %>
 	<%= csrf_meta_tags %>
 </head>
