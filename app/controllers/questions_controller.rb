@@ -1,5 +1,4 @@
 class QuestionsController < ApplicationController
-
 	def new
 		@title = "Create question"
 	end
@@ -9,12 +8,15 @@ class QuestionsController < ApplicationController
 	end
 
 	def show
-		@question = Question.find_by(token: params[:token])
+		@question = Question.setTimeViewAndDeleteOldQuestion(params)
+		Question.delay.deleteOldQuestion()
 		@title = @question.title
 		# binding.pry	
 		# return false
 	end
 
+	
+	
 	def answer
 		UserAnswer.createUserAnswer(params)
 		render plain: true
