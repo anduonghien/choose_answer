@@ -18,7 +18,9 @@
 					<th style="text-align: center" title="Not attend">x</th>
 					<%@question.user_answers.each do |user_answer|%>
 
-					<th style="text-align: center"><%=user_answer.user.full_name%></th>
+					<th style="text-align: center">
+						<span aria-hidden="true" title="<%=user_answer.user.full_name%>" class="glyphicon glyphicon-user"></span>
+					</th>
 					<%end%>
 				</tr>
 			</thead>
@@ -86,7 +88,11 @@
 									<th scope="row">Note</th>
 									<td colspan="3"></td>
 									<%@question.user_answers.each do |user_answer|%>
-									<td style="text-align: center"><%=user_answer.note%></td>
+									<td style="text-align: center">
+										<span title="<%=user_answer.note%>">
+											<span aria-hidden="true" class="glyphicon glyphicon-bookmark"></span>
+										</span>
+									</td>
 									<%end%>
 								</tr>
 							</tbody>
