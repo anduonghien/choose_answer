@@ -29,9 +29,14 @@
 <div class="col-md-4">
 	<span class="label label-default">Step 1</span>
 	<div>
-		<span>Enter question <span style="color: red">*</span></span>
+		<span>
+			Enter question
+			<span style="color: red">*</span>
+			<span id="required_question" style="color: red">Question required</span>
+		</span>
 	</div>
 	<div>
+
 		<%= text_field_tag(:title, nil, class: "form-control", required: "required", placeholder: "Enter your question") %>
 	</div>
 	<div>
@@ -43,7 +48,12 @@
 </div>
 <div class="col-md-4">
 	<span class="label label-default">Step 2</span>
-	<div><span>Enter answer<span style="color: red">*</span></span></div>
+	<div>
+		<span>
+			Enter answer<span style="color: red">*</span>
+			<span id="required_answer" style="color: red">Answer required</span>
+		</span>
+	</div>
 	<div>
 		<%= text_area_tag(:answer, nil, class: "form-control", required: "required", style: "width: 360px; height: 125px;", placeholder: "Enter answer") %>
 	</div>
@@ -69,6 +79,9 @@
 
 <script type="text/javascript">
 	$( document ).ready(function() {
+		$('#required_question').hide();
+		$('#required_answer').hide();
+
 		$('#datepicker').datepicker({
 			format: 'mm/dd/yyyy',
 			startDate: '-0d'
@@ -94,7 +107,18 @@
 		location.reload();
 	});
 
+
+
 	$('#submit').click(function(){
+		if ($('#title').val() == ""){
+			$('#required_question').show();
+			$("#required_question").focus();
+			return false;
+		}else if($('#answer').val() == ""){
+			$('#required_answer').show();
+			$("#required_answer").focus();
+			return false;
+		}
 		$.ajax({
 			url: "/questions",
 			beforeSend: function(xhr) {

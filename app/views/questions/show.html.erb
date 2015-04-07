@@ -92,7 +92,7 @@
 							</tbody>
 						</table>
 						<div class="col-md-4 col-md-offset-5" style="padding-top: 10px;">
-							<button type="button" id="answer" class="btn btn-success">Answers</button>
+							<button type="button" id="answer" style="padding-bottom: 10px;" class="btn btn-success">Answers</button>
 						</div>
 					</div>
 				</div>
@@ -101,6 +101,7 @@
 					<div class="col-md-7 col-md-offset-2" style="padding-top: 10px;">
 						<hr>
 						Name <span style="color: red">*</span>
+						<span id="required_name" style="color: red">Name required</span>
 						<input type="text" class="form-control" id="name">
 
 						<table class="table table-bordered" style="margin-top: 20px" id="table_answer">
@@ -143,11 +144,19 @@
 				<script type="text/javascript">
 					$( document ).ready(function() {
 						$('#answer_form').hide();
+						$('#required_name').hide();
 						$('#answer').click(function(){
 							$(this).hide();
 							$('#answer_form').show();
 						});
 						$('#send_answer').click(function(){
+
+							if ($('#name').val() == ""){
+								$('#required_name').show();
+								$("#required_name").focus();
+								return false;
+							}
+
 							var choose = "";
 							$('input:radio').each(function () {
 								if($(this).is(':checked')){
