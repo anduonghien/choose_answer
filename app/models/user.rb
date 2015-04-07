@@ -1,4 +1,4 @@
 class User < ActiveRecord::Base
 	has_many :user_answers
-	# validates :question_id, presence: true
+	validates_associated :user_answers
 end

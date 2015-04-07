@@ -1,4 +1,7 @@
 class Answer < ActiveRecord::Base
 	belongs_to :questions
-	# validates :question, :content,  presence: true
+
+	def self.abc(a)
+		a
+	end
 end
