@@ -13,9 +13,9 @@
 			<thead>
 				<tr>
 					<th style="text-align: center">Answer</th>
-					<th style="text-align: center">◯</th>
-					<th style="text-align: center">△</th>
-					<th style="text-align: center">x</th>
+					<th style="text-align: center" title="Attend">◯</th>
+					<th style="text-align: center" title="May attend">△</th>
+					<th style="text-align: center" title="Not attend">x</th>
 					<%@question.user_answers.each do |user_answer|%>
 
 					<th style="text-align: center"><%=user_answer.user.full_name%></th>
@@ -26,11 +26,11 @@
 			<tbody>
 				<%@question.answers.each do |answer|%>
 				<%array_num_a = []
-			array_num_c = []
-			array_num_n = []
-			max_a = 0
-			max_n = 0
-			max_c = 0%>
+				array_num_c = []
+				array_num_n = []
+				max_a = 0
+				max_n = 0
+				max_c = 0%>
 				<%num_a = 0
 				num_c = 0
 				num_n = 0%>
@@ -72,11 +72,11 @@
 									answerd = user_answer.answer[index-1...index]%>
 									<th style="text-align: center">
 										<%if answerd.to_i == 0%>
-										◯
+										<span title="Attend">◯</span>
 										<%elsif answerd.to_i == 1%>
-										△
+										<span title="May attend">△</span>
 										<%else%>
-										x
+										<span title="Not attend">x</span>
 										<%end%>
 									</th>
 									<%end%>
@@ -108,9 +108,9 @@
 							<thead>
 								<tr>
 									<th style="text-align: center">Answer</th>
-									<th style="text-align: center">◯</th>
-									<th style="text-align: center">△</th>
-									<th style="text-align: center">x</th>
+									<th style="text-align: center" title="Attend">◯</th>
+									<th style="text-align: center" title="May attend">△</th>
+									<th style="text-align: center" title="Not attend">x</th>
 								</tr>
 							</thead>
 							<tbody>
