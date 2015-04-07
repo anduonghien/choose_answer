@@ -110,15 +110,17 @@
 
 
 	$('#submit').click(function(){
-		if ($('#title').val() == ""){
+		if ($('#title').val().trim() == ""){
 			$('#required_question').show();
 			$("#required_question").focus();
 			return false;
-		}else if($('#answer').val() == ""){
+		}else if($('#answer').val().trim() == ""){
 			$('#required_answer').show();
 			$("#required_answer").focus();
 			return false;
 		}
+		$('#required_question').hide();
+		$('#required_answer').hide();
 		$.ajax({
 			url: "/questions",
 			beforeSend: function(xhr) {
@@ -126,7 +128,7 @@
 			},
 			data: {
 				title: $('#title').val(),
-				memo: $('#memo').val(),
+				memo: $('#memo').val().trim(),
 				answer: $('#answer').val(),
 			},
 			type: "POST",

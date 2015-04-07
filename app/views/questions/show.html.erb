@@ -159,12 +159,12 @@
 						});
 						$('#send_answer').click(function(){
 
-							if ($('#name').val() == ""){
+							if ($('#name').val().trim() == ""){
 								$('#required_name').show();
 								$("#required_name").focus();
 								return false;
 							}
-
+							$('#required_name').hide();
 							var choose = "";
 							$('input:radio').each(function () {
 								if($(this).is(':checked')){
@@ -180,7 +180,7 @@
 								data: {
 									full_name: $('#name').val(),
 									answer: choose,
-									note: $('#note').val(),
+									note: $('#note').val().trim(),
 									question_id: <%=@question.id%>
 								},
 								type: "POST",
@@ -197,5 +197,5 @@
 							console.log(choose);
 							console.log($('#note').val());
 						});
-					});
+});
 </script>
