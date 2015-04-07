@@ -1,0 +1,16 @@
+Add gem "pg" to gem file
+change adatep database from mysql2 to postgesql
+
+heroku create
+git push heroku master
+
+heroku run rake db:migrate
+
+heroku ps:scale web=1
+
+heroku run rails console
+
+---
+Change name
+git remote rm heroku
+heroku git:remote -a newname
