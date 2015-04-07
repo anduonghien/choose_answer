@@ -19,7 +19,9 @@
 					<%@question.user_answers.each do |user_answer|%>
 
 					<th style="text-align: center">
+						<%if user_answer.user.full_name != ""%>
 						<span aria-hidden="true" title="<%=user_answer.user.full_name%>" class="glyphicon glyphicon-user"></span>
+						<%end%>
 					</th>
 					<%end%>
 				</tr>
@@ -89,9 +91,9 @@
 									<td colspan="3"></td>
 									<%@question.user_answers.each do |user_answer|%>
 									<td style="text-align: center">
-										<span title="<%=user_answer.note%>">
-											<span aria-hidden="true" class="glyphicon glyphicon-bookmark"></span>
-										</span>
+										<%if user_answer.note != ""%>
+										<span title="<%=user_answer.note%>" aria-hidden="true" class="glyphicon glyphicon-bookmark"></span>
+										<%end%>
 									</td>
 									<%end%>
 								</tr>
