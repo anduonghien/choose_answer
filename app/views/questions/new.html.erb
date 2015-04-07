@@ -1,0 +1,118 @@
+<% content_for :css do %>
+<%= stylesheet_link_tag 'bootstrap-datepicker.min'%>
+<% end %>
+<% content_for :js do %>
+<%= javascript_include_tag 'bootstrap-datepicker.min'%>
+<% end %>
+
+<div class="modal fade" id="post_question_success">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Create question successfully</h4>
+			</div>
+			<div class="modal-body">
+				<p><%=request.host%>:<%=request.port%>/question/<span id="token_link"></span></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="close_model" class="btn btn-default" data-dismiss="modal">Close</button>
+				<a id="view_link" href="question/" target="_blank">
+					<button type="button" class="btn btn-primary">View question</button>
+				</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="col-md-4">
+	<span class="label label-default">Step 1</span>
+	<div>
+		<span>Enter question <span style="color: red">*</span></span>
+	</div>
+	<div>
+		<%= text_field_tag(:title, nil, class: "form-control", required: "required", placeholder: "Enter your question") %>
+	</div>
+	<div>
+		<span>Enter memo</span>
+	</div>
+	<div>
+		<%= text_area_tag(:memo, nil, class: "form-control", required: "required", placeholder: "Enter memo of question") %>
+	</div>
+</div>
+<div class="col-md-4">
+	<span class="label label-default">Step 2</span>
+	<div><span>Enter answer<span style="color: red">*</span></span></div>
+	<div>
+		<%= text_area_tag(:answer, nil, class: "form-control", required: "required", style: "width: 360px; height: 125px;", placeholder: "Enter answer") %>
+	</div>
+</div>
+<div class="col-md-4">
+	<span>Celendar</span>
+	<div>
+		<button type="button" id="datepicker" class="btn btn-primary">
+			show calendar
+		</button>
+	</div>
+
+</div>
+<div class="row">
+	<div class="col-md-2 col-md-offset-5" style="padding-top: 20px">
+		<button type="button" id="submit" class="btn btn-success">
+			Create
+		</button>
+		<!-- 	<%= submit_tag "Create", class: "btn btn-success" %> -->
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	$( document ).ready(function() {
+		$('#datepicker').datepicker({
+			format: 'mm/dd/yyyy',
+			startDate: '-0d'
+		});
+	//
+	$('#datepicker').datepicker().on('changeDate', function (ev) {
+		var old = $('#answer').val().trim();
+		var date = $('#datepicker').datepicker('getDate').getDate();
+		var month = $('#datepicker').datepicker('getDate').getMonth()+1;
+		var year = $('#datepicker').datepicker('getDate').getFullYear();
+		var result = date + "/" + month + "/" + year + " - 18:00~";
+		console.log(old);
+		if(old != "")
+			$('#answer').val(old+'\n'+result);
+		else
+			$('#answer').val(result);
+	});
+
+	$('#close_model').click(function(){
+		$('#title').val("");
+		$('#memo').val("");
+		$('#answer').val("");
+		location.reload();
+	});
+
+	$('#submit').click(function(){
+		$.ajax({
+			url: "/questions",
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+			},
+			data: {
+				title: $('#title').val(),
+				memo: $('#memo').val(),
+				answer: $('#answer').val(),
+			},
+			type: "POST",
+			success: function(data){
+				console.log(data);
+				$('#token_link').text(data);
+				$('#view_link').attr("href","/question/"+data);
+				$('#post_question_success').modal('show');
+			}
+		});
+	});
+});
+</script>

@@ -1,0 +1,184 @@
+<div style="padding-top: 20px">
+	<div class="col-md-9 col-md-offset-2" style="padding-top: 10px;">
+		<blockquote>
+			<p><%= @question.title%></p>
+			<footer><%= @question.memo%></footer>
+		</blockquote>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-7 col-md-offset-2" style="padding-top: 10px;">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th style="text-align: center">Answer</th>
+					<th style="text-align: center">◯</th>
+					<th style="text-align: center">△</th>
+					<th style="text-align: center">x</th>
+					<%@question.user_answers.each do |user_answer|%>
+
+					<th style="text-align: center"><%=user_answer.user.full_name%></th>
+					<%end%>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<%@question.answers.each do |answer|%>
+				<%array_num_a = []
+			array_num_c = []
+			array_num_n = []
+			max_a = 0
+			max_n = 0
+			max_c = 0%>
+				<%num_a = 0
+				num_c = 0
+				num_n = 0%>
+				<%@question.user_answers.each do |user_answer|%>
+				<%index = user_answer.answer.index('-'+answer.id.to_s+',')
+				answerd = user_answer.answer[index-1...index]
+				if answerd.to_i == 0
+					num_a +=1
+					array_num_a << num_a
+				elsif answerd.to_i == 1
+					num_c +=1
+					array_num_c << num_c
+				else
+					num_n +=1
+					array_num_n << num_n
+				end
+				end%>
+				<%if(array_num_a.max != nil)
+					max_a = array_num_a.max
+					end%>
+					<%if(array_num_c.max != nil)
+						max_c = array_num_c.max
+						end%>
+						<%if(array_num_n.max != nil)
+							max_n = array_num_n.max
+							end%>
+							<%total_num_a = max_a - max_c - max_n %>
+							<%if total_num_a >= 1%>
+							<tr style="background: #D8FF62">
+								<%else%>
+								<tr>
+									<%end%>
+									<th scope="row" style="background: #fff"><%=answer.content%></th>
+									<td style="text-align: center"><%=num_a%></td>
+									<td style="text-align: center"><%=num_c%></td>
+									<td style="text-align: center"><%=num_n%></td>
+									<%@question.user_answers.each do |user_answer|%>
+									<%index = user_answer.answer.index('-'+answer.id.to_s+',')
+									answerd = user_answer.answer[index-1...index]%>
+									<th style="text-align: center">
+										<%if answerd.to_i == 0%>
+										◯
+										<%elsif answerd.to_i == 1%>
+										△
+										<%else%>
+										x
+										<%end%>
+									</th>
+									<%end%>
+								</tr>
+								<%end%>
+								<tr>
+									<th scope="row">Note</th>
+									<td colspan="3"></td>
+									<%@question.user_answers.each do |user_answer|%>
+									<td style="text-align: center"><%=user_answer.note%></td>
+									<%end%>
+								</tr>
+							</tbody>
+						</table>
+						<div class="col-md-4 col-md-offset-5" style="padding-top: 10px;">
+							<button type="button" id="answer" class="btn btn-success">Answers</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="row" id="answer_form">
+					<div class="col-md-7 col-md-offset-2" style="padding-top: 10px;">
+						<hr>
+						Name <span style="color: red">*</span>
+						<input type="text" class="form-control" id="name">
+
+						<table class="table table-bordered" style="margin-top: 20px" id="table_answer">
+							<thead>
+								<tr>
+									<th style="text-align: center">Answer</th>
+									<th style="text-align: center">◯</th>
+									<th style="text-align: center">△</th>
+									<th style="text-align: center">x</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%@question.answers.each do |answer|%>
+								<tr>
+									<th scope="row"><%=answer.content%></th>
+									<td style="text-align: center">
+										<input type="radio" name="radio_<%=answer.id%>" value="0-<%=answer.id%>">
+									</td>
+									<td style="text-align: center">
+										<input type="radio" name="radio_<%=answer.id%>" value="1-<%=answer.id%>">
+									</td>
+									<td style="text-align: center">
+										<input type="radio" name="radio_<%=answer.id%>" value="2-<%=answer.id%>" checked="checked">
+									</td>
+								</tr>
+								<%end%>
+							</tbody>
+						</table>
+
+						Note
+						<input type="note" class="form-control" id="note">
+
+						<div class="col-md-4 col-md-offset-5" style="padding-top: 10px; padding-bottom: 20px">
+							<button type="button" id="send_answer" class="btn btn-success">Send answer</button>
+						</div>
+					</div>
+				</div>
+
+
+				<script type="text/javascript">
+					$( document ).ready(function() {
+						$('#answer_form').hide();
+						$('#answer').click(function(){
+							$(this).hide();
+							$('#answer_form').show();
+						});
+						$('#send_answer').click(function(){
+							var choose = "";
+							$('input:radio').each(function () {
+								if($(this).is(':checked')){
+									choose += $(this).val()+',';
+								}
+							});
+
+							$.ajax({
+								url: "/question/answer",
+								beforeSend: function(xhr) {
+									xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+								},
+								data: {
+									full_name: $('#name').val(),
+									answer: choose,
+									note: $('#note').val(),
+									question_id: <%=@question.id%>
+								},
+								type: "POST",
+								success: function(data){
+									if(data){
+										$('#name').val("");
+										$('#note').val("");
+										location.reload();
+									}
+								}
+							});
+
+							console.log($('#name').val());
+							console.log(choose);
+							console.log($('#note').val());
+						});
+					});
+</script>

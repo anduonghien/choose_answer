@@ -1,0 +1,9 @@
+/home/dhan/.rbenv/versions/2.2.1/bin/ruby -r ./siteconf20150407-28389-19pb30z.rb extconf.rb
+creating Makefile
+
+make "DESTDIR=" clean
+
+make "DESTDIR="
+make: Nothing to be done for `all'.
+
+make "DESTDIR=" install
