@@ -5,5 +5,5 @@ Rails.application.routes.draw do
   post '/question/answer', to: 'questions#answer'
 
   get '/statistical' , to: 'questions#getStatistical'
-  post '/statistical', to: 'questions#postStatistical'
+  post '/post-statistical', to: 'questions#postStatistical'
 end
