@@ -14,11 +14,21 @@ class QuestionsController < ApplicationController
 		# binding.pry	
 		# return false
 	end
-
-	
 	
 	def answer
 		UserAnswer.createUserAnswer(params)
 		render plain: true
+	end
+
+	def getStatistical
+		@array_return = Question.statistical(Date.today.beginning_of_month.strftime("%d-%m-%Y"), Time.now.strftime("%d-%m-%Y"))
+		@title = "Statistical"
+		render :template => 'questions/statistical'
+	end
+
+	def postStatistical
+		@array_return = Question.statistical(params[:start_date], params[:end_date])
+		@title = "Statistical"
+		render :template => 'questions/statistical'
 	end
 end

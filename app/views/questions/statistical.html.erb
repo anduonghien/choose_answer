@@ -1,0 +1,103 @@
+<% content_for :css do %>
+<%= stylesheet_link_tag 'bootstrap-datepicker.min'%>
+<% end %>
+<% content_for :js do %>
+<%= javascript_include_tag 'bootstrap-datepicker.min'%>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<% end %>
+<div style="margin: 0 auto; width: 200px; font-size: 2em">
+	Statistical form
+</div>
+<%= form_tag("/statistical", method: "post") do %>
+<div>
+	Start date <span style="color: red" id="start_date_require">Start date require</span>
+	<input class="datepicker form-control" data-date-format="dd/mm/yyyy" name="start_date" readonly="true">
+</div>
+<div>
+	End date <span style="color: red" id="end_date_require">End date require</span>
+	<input class="datepicker form-control" data-date-format="dd/mm/yyyy" name="end_date" readonly="true">
+</div>
+<div style="margin: 0 auto; width: 200px; font-size: 2em">
+	<button class="btn btn-success" id="submit" style="margin-top: 20px">Submit</button>
+</div>
+<% end %>
+
+<hr>
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto; margin-top: 20px"></div>
+<script type="text/javascript">
+	$(function () {
+
+		$('.datepicker').datepicker({
+			endDate: '-0d',
+			autoclose: true,
+			todayHighlight: true,
+		});
+		$('#start_date_require').hide();
+		$('#end_date_require').hide();
+
+		$('#submit').click(function(){
+			if($('input[name="start_date"]').val().trim() == ""){
+				$('#start_date_require').show();
+				return false;
+			}
+			if($('input[name="end_date"]').val().trim() == ""){
+				$('#end_date_require').show();
+				return false;
+			}
+		});	
+
+		$('#container').highcharts({
+			title: {
+				text: 'Statistical',
+            x: -20 //center
+          },
+          xAxis: {
+          	categories: [
+          	<%@array_return[0].each do |day|%>
+          	"<%=day%>",
+          	<%end%>
+          	],
+          	labels: {
+          		rotation: -90
+          	}
+          },
+          yAxis: {
+          	title: {
+          		text: 'Numbers'
+          	},
+          	plotLines: [{
+          		value: 0,
+          		width: 1,
+          		color: '#808080'
+          	}]
+          },
+          tooltip: {
+          	valueSuffix: ''
+          },
+          exporting: {
+          	filename:
+          	'Statistical',
+          },
+          legend: {
+          	layout: 'vertical',
+          	align: 'right',
+          	verticalAlign: 'middle',
+          	borderWidth: 0
+          },
+          credits: {
+          	enabled: false
+          },
+          series: [{
+          	name: 'Question',
+          	data: [<%=@array_return[1]%>]
+          }, {
+          	name: 'Answer',
+          	data: [<%=@array_return[3]%>]
+          }, {
+          	name: 'User',
+          	data: [<%=@array_return[2]%>]
+          }]
+        });
+});
+</script>
