@@ -2,7 +2,7 @@ class UserAnswer < ActiveRecord::Base
 	belongs_to :question
 	belongs_to :user
 
-	def self.createUserAnswer(params)
+	def self.create_user_answer(params)
 		@user = User.create(
 			full_name: params[:full_name],
 			token: Digest::MD5.hexdigest(Time.now.to_i.to_s + Random.rand(999).to_s)

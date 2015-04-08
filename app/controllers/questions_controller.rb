@@ -4,30 +4,36 @@ class QuestionsController < ApplicationController
 	end
 
 	def create
-		render plain: Question.createQuestion(params)
+		render plain: Question.create_question(params)
 	end
 
 	def show
-		@question = Question.setTimeViewAndDeleteOldQuestion(params)
-		Question.delay.deleteOldQuestion()
+		@question = Question.set_time_view_and_delete_old_question(params)
+		Question.delay.delete_old_question()
 		@title = @question.title
 		# binding.pry	
 		# return false
 	end
 	
 	def answer
-		UserAnswer.createUserAnswer(params)
+		UserAnswer.create_user_answer(params)
 		render plain: true
 	end
 
-	def getStatistical
-		@array_return = Question.statistical(Date.today.beginning_of_month.strftime("%d-%m-%Y"), Time.now.strftime("%d-%m-%Y"))
+	def get_statistical
+		@array_return = Question.statistical(
+			Date.today.beginning_of_month.strftime("%d-%m-%Y"), 
+			Time.now.strftime("%d-%m-%Y")
+			)
 		@title = "Statistical"
 		render :template => 'questions/statistical'
 	end
 
-	def postStatistical
-		@array_return = Question.statistical(params[:start_date], params[:end_date])
+	def post_statistical
+		@array_return = Question.statistical(
+			params[:start_date], 
+			params[:end_date]
+			)
 		@title = "Statistical"
 		render :template => 'questions/statistical'
 	end

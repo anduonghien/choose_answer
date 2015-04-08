@@ -4,10 +4,18 @@ class Question < ActiveRecord::Base
 	validates :title, presence: true
 	validates_associated :answers, :user_answers
 	#Create question
-	def self.createQuestion(params)
+	def self.create_question(params)
 		@answer = params[:answer].split("\n")
-		@tokenQuestion = Digest::MD5.hexdigest(Time.now.to_i.to_s + Random.rand(999).to_s);
-		@question = Question.create(last_view: Time.now.to_i, title: params[:title], memo: params[:memo], user_id: 0, token: @tokenQuestion)
+		@tokenQuestion = Digest::MD5.hexdigest(
+			Time.now.to_i.to_s + Random.rand(999).to_s
+			)
+		@question = Question.create(
+			last_view: Time.now.to_i, 
+			title: params[:title], 
+			memo: params[:memo], 
+			user_id: 0, 
+			token: @tokenQuestion
+			)
 
 		answers = []
 		@answer.each do |content_answer|
@@ -23,16 +31,19 @@ class Question < ActiveRecord::Base
 		return @tokenQuestion
 	end
 	#Find question and update last_view for question
-	def self.setTimeViewAndDeleteOldQuestion(params)
+	def self.set_time_view_and_delete_old_question(params)
 		@question = Question.find_by(token: params[:token])
 		@question.last_view = Time.now.to_i
 		@question.save
 		return @question
 	end
 	#Delete question has last_view < 1 month ago
-	def self.deleteOldQuestion()
+	def self.delete_old_question()
 		# Time.now.to_i - 1.month.to_i
-		questions = Question.where("last_view < :time_1_month_ago", {time_1_month_ago: Time.now.to_i - 1.month.to_i})
+		questions = Question.where(
+			"last_view < :time_1_month_ago", 
+			{time_1_month_ago: Time.now.to_i - 1.month.to_i}
+			)
 		questions.each do |question|
 			# question.destroy_all
 			# rake jobs:workoff
@@ -60,9 +71,18 @@ class Question < ActiveRecord::Base
 		#loop array date
 		(start_date..end_date).each do |day|
 			str_range_date << day[8...10] + "-" + day[5...7] + "-" + day[0...4]
-			str_num_question_per_date += Question.where("created_at >= :start AND created_at <= :end", {start: day+" 00:00:00", end: day+" 23:59:59"}).count().to_s + ", "
-			str_num_users_per_date += User.where("created_at >= :start AND created_at <= :end", {start: day+" 00:00:00", end: day+" 23:59:59"}).count().to_s + ", "
-			str_num_answer_per_date += Answer.where("created_at >= :start AND created_at <= :end", {start: day+" 00:00:00", end: day+" 23:59:59"}).count().to_s + ", "
+			str_num_question_per_date += Question.where(
+				"created_at >= :start AND created_at <= :end", 
+				{start: day+" 00:00:00", end: day+" 23:59:59"}
+				).count().to_s + ", "
+			str_num_users_per_date += User.where(
+				"created_at >= :start AND created_at <= :end", 
+				{start: day+" 00:00:00", end: day+" 23:59:59"}
+				).count().to_s + ", "
+			str_num_answer_per_date += Answer.where(
+				"created_at >= :start AND created_at <= :end", 
+				{start: day+" 00:00:00", end: day+" 23:59:59"}
+				).count().to_s + ", "
 		end
 		@array_return = []
 		@array_return << str_range_date
