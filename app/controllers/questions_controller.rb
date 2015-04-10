@@ -9,7 +9,7 @@ class QuestionsController < ApplicationController
 
 	def show
 		@question = Question.set_time_view_and_delete_old_question(params)
-		Question.delay.delete_old_question()
+		# Question.delay.delete_old_question()
 		@title = @question.title
 		# binding.pry	
 		# return false

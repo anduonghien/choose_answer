@@ -58,9 +58,9 @@ class Question < ActiveRecord::Base
 		# start_date = start_date[6...10] + "-" + start_date[3...5] + "-" + start_date[0...2]
 		# end_date = end_date[6...10] + "-" + end_date[3...5] + "-" + end_date[0...2]
 		end_date = "#{end_date[6...10]}-#{end_date[3...5]}-#{end_date[0...2]}" 
-		@total_questions = Question.count()
-		@total_users = User.count()
-		@total_answer = Answer.count()
+		@total_questions = Question.select(:id).count()
+		@total_users = User.select(:id).count()
+		@total_answer = Answer.select(:id).count()
 
 		# create range date
 		str_range_date = []
@@ -90,6 +90,10 @@ class Question < ActiveRecord::Base
 		@array_return << str_num_question_per_date[0...str_num_question_per_date.length-2]
 		@array_return << str_num_users_per_date[0...str_num_users_per_date.length-2]
 		@array_return << str_num_answer_per_date[0...str_num_answer_per_date.length-2]
+		
+		@array_return << @total_questions
+		@array_return << @total_users
+		@array_return << @total_answer
 		@array_return
 	end
 
