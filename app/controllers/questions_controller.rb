@@ -21,7 +21,7 @@ class QuestionsController < ApplicationController
 	end
 
 	def get_statistical
-		@array_return = Question.statistical(
+		@hash_return = Question.statistical(
 			Date.today.beginning_of_month.strftime("%d-%m-%Y"), 
 			Time.now.strftime("%d-%m-%Y")
 			)
@@ -30,7 +30,7 @@ class QuestionsController < ApplicationController
 	end
 
 	def post_statistical
-		@array_return = Question.statistical(
+		@hash_return = Question.statistical(
 			params[:start_date], 
 			params[:end_date]
 			)

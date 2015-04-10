@@ -24,10 +24,11 @@
 <% end %>
 
 <hr>
+
 <div>
-     <p>Total Question <span class="badge"><%=@array_return[4]%></p>
-     <p>Total User <span class="badge"><%=@array_return[5]%></p>
-     <p>Total Answer <span class="badge"><%=@array_return[6]%></p>
+     <p>Total Question <span class="badge"><%=@hash_return[:total_question]%></p>
+     <p>Total User <span class="badge"><%=@hash_return[:total_user]%></p>
+     <p>Total Answer <span class="badge"><%=@hash_return[:total_answer]%></p>
 </div>
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto; margin-top: 20px"></div>
 <script type="text/javascript">
@@ -59,9 +60,7 @@
        },
        xAxis: {
            categories: [
-           <%@array_return[0].each do |day|%>
-           "<%=day%>",
-           <%end%>
+           <%=@hash_return[:range_day].join()%>
            ],
            labels: {
             rotation: -90
@@ -95,13 +94,13 @@ credits: {
 },
 series: [{
  name: 'Question',
- data: [<%=@array_return[1]%>]
+ data: [<%=@hash_return[:str_num_question]%>]
 }, {
  name: 'Answer',
- data: [<%=@array_return[3]%>]
+ data: [<%=@hash_return[:str_num_answer]%>]
 }, {
  name: 'User',
- data: [<%=@array_return[2]%>]
+ data: [<%=@hash_return[:str_num_user]%>]
 }]
 });
      });
