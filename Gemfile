@@ -1,8 +1,10 @@
 source 'https://rubygems.org'
 gem 'activerecord-import'
-
+#For delay background job
 gem 'delayed_job_active_record'
-
+#For schedule job
+gem 'clockwork'
+#For Postgress
 gem 'pg'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

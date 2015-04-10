@@ -38,15 +38,18 @@ class Question < ActiveRecord::Base
 	#Delete question has last_view < 1 month ago
 	def self.delete_old_question()
 		# Time.now.to_i - 1.month.to_i
-		questions = Question.where(
-			"last_view < :time_1_month_ago", 
-			{time_1_month_ago: Time.now.to_i - 1.month.to_i}
-			)
-		questions.each do |question|
-			# question.destroy_all
-			# rake jobs:workoff
-			puts question.id
-		end
+		# questions = Question.where(
+		# 	"last_view < :time_1_month_ago", 
+		# 	{time_1_month_ago: Time.now.to_i - 1.month.to_i}
+		# 	)
+		# questions.each do |question|
+		# 	# question.destroy_all
+		# 	# rake jobs:workoff
+		# 	puts question.id
+		# end
+		puts "--------------------------------"
+		puts "Hehe"
+		puts "--------------------------------"
 	end
 
 	#Statistical
@@ -90,7 +93,7 @@ class Question < ActiveRecord::Base
 		@array_return << str_num_question_per_date[0...str_num_question_per_date.length-2]
 		@array_return << str_num_users_per_date[0...str_num_users_per_date.length-2]
 		@array_return << str_num_answer_per_date[0...str_num_answer_per_date.length-2]
-		
+
 		@array_return << @total_questions
 		@array_return << @total_users
 		@array_return << @total_answer
