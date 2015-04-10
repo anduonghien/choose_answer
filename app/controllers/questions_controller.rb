@@ -3,7 +3,7 @@ class QuestionsController < ApplicationController
 		@title = "Create question"
 	end
 
-	def create
+  def create
 		render plain: Question.create_question(params)
 	end
 

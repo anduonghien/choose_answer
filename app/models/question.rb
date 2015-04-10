@@ -6,9 +6,7 @@ class Question < ActiveRecord::Base
 	#Create question
 	def self.create_question(params)
 		@answer = params[:answer].split("\n")
-		@tokenQuestion = Digest::MD5.hexdigest(
-			Time.now.to_i.to_s + Random.rand(999).to_s
-			)
+		@tokenQuestion = Digest::MD5.hexdigest("#{Time.now.to_i.to_s} #{Random.rand(999).to_s}")
 		@question = Question.create(
 			last_view: Time.now.to_i, 
 			title: params[:title], 
@@ -55,9 +53,11 @@ class Question < ActiveRecord::Base
 	def self.statistical(start_date, end_date)
 		#start_date = "15-10-2015"
 		#end_date = "20-04-2015"
-		#format date
-		start_date = start_date[6...10] + "-" + start_date[3...5] + "-" + start_date[0...2]
-		end_date = end_date[6...10] + "-" + end_date[3...5] + "-" + end_date[0...2]
+		#format date to 2015-10-15
+		start_date = "#{start_date[6...10]}-#{start_date[3...5]}-#{start_date[0...2]}"
+		# start_date = start_date[6...10] + "-" + start_date[3...5] + "-" + start_date[0...2]
+		# end_date = end_date[6...10] + "-" + end_date[3...5] + "-" + end_date[0...2]
+		end_date = "#{end_date[6...10]}-#{end_date[3...5]}-#{end_date[0...2]}" 
 		@total_questions = Question.count()
 		@total_users = User.count()
 		@total_answer = Answer.count()
