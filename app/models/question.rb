@@ -122,8 +122,8 @@ class Question < ActiveRecord::Base
 		(date_time_start_day..date_time_end_day).each do |day|
 			arr_range_date << "#{day.strftime("%d-%m-%Y")}, "
 			str_num_question_per_date = "#{str_num_question_per_date}#{Question.get_num_on_day(day).select(:id).count().to_s}, "
-			str_num_users_per_date = "#{str_num_users_per_date}#{Question.get_num_on_day(day).select(:id).count().to_s}, "
-			str_num_answer_per_date = "#{str_num_answer_per_date}#{Question.get_num_on_day(day).select(:id).count().to_s}, "
+			str_num_users_per_date = "#{str_num_users_per_date}#{User.get_num_on_day(day).select(:id).count().to_s}, "
+			str_num_answer_per_date = "#{str_num_answer_per_date}#{Answer.get_num_on_day(day).select(:id).count().to_s}, "
 		end
 		hash_return = {
 			range_day: arr_range_date,
